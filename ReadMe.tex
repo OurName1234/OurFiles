@@ -1,0 +1,73 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Welcome to Overleaf --- just edit your LaTeX on the left,
+% and we'll compile it for you on the right. If you open the
+% 'Share' menu, you can invite other users to edit at the same
+% time. See www.overleaf.com/learn for more info. Enjoy!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+\usepackage{fixmath}
+\begin{document}
+
+\title{Guide for Reproducibility of the LocalMaxs Improvement and its Results}
+\maketitle
+\author{(\textit{Unidentified authors at the paper submission stage})}
+\section{Introduction}
+This is a guide to reproduce the algorithms related to the content of the paper titled \textit{Improving LocalMaxs Multiword Expression Extractor}. File \textbf{Archive.zip} must be uncompressed. It contains the python files 
+
+\vspace{7px}
+\textbf{LocalMaxs.py},
+
+ \textbf{StopWordsModule.py}. 
+ 
+ \vspace{7px}
+ And the following files, which are text \textit{corpora}: 
+ 
+ \vspace{7px}
+ 
+\textbf{EN6.0Mw}, 
+ 
+ \textbf{EN0.5Mw}, 
+ 
+ \textbf{FR6.1Mw},
+
+ \textbf{PT6.1Mw},
+
+ \textbf{DE6.0Mw}.
+ 
+ \vspace{7px}
+ In order to perform reproducibility, all these files may be dowloaded to a single folder.
+ 
+\section{Extracting Relevant Expressions from \textit{Corpora}}\label{wk}
+In order to extract Relevant Expressions (RE) from \textit{corpora}, the python function \textbf{LocalLocalMaxs(CorpusFileName, MaxNgramLength, AllMetrics, ResSampleForEval, P)} must be called. These are the meaning of the parameters:
+
+\vspace{7px}
+\textit{CorpusFileName} is the name of the unziped text file corresponding to the text \textit{corpus} from where REs will be extracted;
+
+\vspace{7px}
+\textit{MaxNgramLength}, whose default value equals 7, is the greatest number (plus one) of words forming the REs to be extracted from the \textit{corpus}; 
+
+\vspace{7px}
+\textit{AllMetrics}, which is a boolean parameter, indicates whether or not the user wants to obtain four different lists of REs extracted, each one based on one of the four cohesion functions: $\chi^{2}\!\!\_{f}(.)$; $SCP\!\!\_{f}(.)$; $Dice\!\_{f}(.)$ and $MI\!\_{f}(.)$}. The default is False and means that only $\chi^{2}\!\!\_{f}(.)$ will be used;
+
+\vspace{7px}
+\textit{ResSampleForEval}, which is boolean, indicates whether or not the user wants to obtain random samples, each one from the full set of REs extracted by the LocalMaxs using one of the four  cohesion functions. The size of each sample set is 752, in order to ensure a $95\,\%$ confidence level on a confidence interval equal to $0.7\pm 0.033$, for a \textit{z-score}$\!=\!1.96$ and a proportion value (Precision in this case) around 0.7. Default is False, producing no sample. 
+
+\vspace{7px}
+$P$ is a positive integer for the power of the generalized mean used in the criterion for the selection of the REs, defined in improved LocalMaxs proposed in Definition 2 of the paper. Default value is 2.
+
+\vspace{7px}
+
+So, this means that taking for example a file named "CorpusFile", if \textit{LocalMaxs("CorpusFile")} is called in python context, only a file named "REsQuiSqr\_CorpusFile\_2" is produced containing the full set of REs, from 1-grams to 6-grams, extracted from the \textit{corpus} in "CorpusFile" file, each line containing an RE. If the command is \textit{LocalLocalMaxs("CorpusFile", P=1)}, a file named "REsQuiSqr\_CorpusFile\_1" will be generated with REs selected using $P\!=\!1$ for the power of the referred generalised mean. 
+
+In order to estimate the Precision of the REs extracted from a \textit{corpus} by the LocalMaxs using one of the four cohesion measures, a random sample of those REs must be evaluated for that. So, in addition to the Recall, if the user wants, for example, to evaluate the Precision of the REs extracted from the "EN6.0Mw" (one of available \textit{corpora} as referred) according to each of the cohesion metrics and using P=2, \textit{LocalLocalMaxs("EN6.0Mw", AllMetrics=True, ResSampleForEval=True)} must be called. In this case, the following files will be generated: "REsQuiSqr\_EN6.0Mw\_2", "REsQuiSqr\_EN6.0Mw\_2\_Sample", "REsSCP\_EN6.0Mw\_2", "REsSCP\_EN6.0Mw\_2\_Sample", "REsDice\_EN6.0Mw\_2",
+"REsDice\_EN6.0Mw\_2\_Sample",
+"REsMI\_EN6.0Mw\_2" and
+"REsMI\_EN6.0Mw\_2\_Sample".
+\vspace{7px}
+\vspace{7px}
+
+\textbf{--- End of the Guide ---}
+\end{document}
